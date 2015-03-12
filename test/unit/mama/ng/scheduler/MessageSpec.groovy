@@ -47,7 +47,7 @@ class MessageSpec extends Specification {
             message.save()
         expect:
             message.hasErrors()
-            message.errors["schedule"]("nullable")
+            message.errors["schedule"].equals("nullable")
     }
 
     void "test incorrect type schedule"() {
