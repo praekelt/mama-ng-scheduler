@@ -6,7 +6,7 @@ class Message {
 
     String id = UUID.randomUUID().toString()
     Date nextSend
-    Date created
+    Date dateCreated
 
     static constraints = {
         id generator:'assigned'

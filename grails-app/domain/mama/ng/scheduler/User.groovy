@@ -7,6 +7,7 @@ class User {
     String passwordHash
     String apiKey
     UserType type = UserType.GENERAL
+    Date dateCreated
 
     static constraints = {
         id generator:'assigned'
