@@ -23,7 +23,7 @@ class MessageSpec extends Specification {
         use (TimeCategory) {
             mockForConstraintsTests(Message)
             schedule = new Schedule(
-                userId: "user-id",
+                subscriptionId: "user-id",
                 frequency: 5,
                 cronDefinition: "0 9 * * 3",
                 nextSend: new Date() + 2.days,

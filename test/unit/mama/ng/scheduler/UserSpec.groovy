@@ -31,56 +31,56 @@ class UserSpec extends Specification {
 
     void "test blank username"() {
         given:
-        user.username = ""
-        user.save()
+            user.username = ""
+            user.save()
         expect:
-        user.hasErrors()
-        user.errors["username"].toString().contains("blank")
+            user.hasErrors()
+            user.errors["username"].toString().contains("blank")
     }
 
     void "test null username"() {
         given:
-        user.username = null
-        user.save()
+            user.username = null
+            user.save()
         expect:
-        user.hasErrors()
-        user.errors["username"].toString().contains("nullable")
+            user.hasErrors()
+            user.errors["username"].toString().contains("nullable")
     }
 
     void "test blank passwordHash"() {
         given:
-        user.passwordHash = ""
-        user.save()
+            user.passwordHash = ""
+            user.save()
         expect:
-        user.hasErrors()
-        user.errors["passwordHash"].toString().contains("blank")
+            user.hasErrors()
+            user.errors["passwordHash"].toString().contains("blank")
     }
 
     void "test null passwordHash"() {
         given:
-        user.passwordHash = null
-        user.save()
+            user.passwordHash = null
+            user.save()
         expect:
-        user.hasErrors()
-        user.errors["passwordHash"].toString().contains("nullable")
+            user.hasErrors()
+            user.errors["passwordHash"].toString().contains("nullable")
     }
 
     void "test blank apiKey"() {
         given:
-        user.apiKey = ""
-        user.save()
+            user.apiKey = ""
+            user.save()
         expect:
-        user.hasErrors()
-        user.errors["apiKey"].toString().contains("blank")
+            user.hasErrors()
+            user.errors["apiKey"].toString().contains("blank")
     }
 
     void "test null apiKey"() {
         given:
-        user.apiKey = null
-        user.save()
+            user.apiKey = null
+            user.save()
         expect:
-        user.hasErrors()
-        user.errors["apiKey"].toString().contains("nullable")
+            user.hasErrors()
+            user.errors["apiKey"].toString().contains("nullable")
     }
 
 }

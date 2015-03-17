@@ -5,7 +5,7 @@ class Schedule {
     static hasMany = [messages: Message]
 
     String id = UUID.randomUUID().toString()
-    String userId
+    String subscriptionId
     Integer frequency
     Integer sendCounter = 0
     String cronDefinition
@@ -15,7 +15,7 @@ class Schedule {
 
     static constraints = {
         id generator:'assigned'
-        userId(blank: false, nullable: false)
+        subscriptionId(blank: false, nullable: false)
         frequency(min: 1, nullable: false)
         sendCounter(min: 0, nullable: false)
         cronDefinition(matches: '^(((([1-5]?[0-9])(\\,|\\-))*([1-5]?[0-9]))|\\*)\\ ' + //min (0 - 59)
