@@ -16,6 +16,8 @@ class User {
         apiKey(blank: false, nullable: false, unique: true)
     }
 
+    static mapping = { table 'service_users' }
+
     enum UserType {
         GENERAL,
         SUPER
