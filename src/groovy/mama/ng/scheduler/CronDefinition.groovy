@@ -21,7 +21,7 @@ class CronDefinition {
         '((((([1]?[0-9])|([2][0-3]))(\\,|\\-))*(([1]?[0-9])|([2][0-3])))|\\*)\\ ' + //hour (0 - 23)
         '((((([1-9])|([1-2][0-9])|([3][0-1]))(\\,|\\-))*(([1-9])|([1-2][0-9])|([3][0-1])))|\\*)\\ ' + //day of month (1 - 31)
         '((((([0-9])|([1][0-2]))(\\,|\\-))*(([0-9])|([1][2])))|\\*)\\ ' + //month (1 - 12)
-        '(((([0-6])(\\,|\\-))*([0-6]))|\\*)$' //day of week (0 - 6) (0 to 6 are Sunday to Saturday, or use names; 7 is Sunday, the same as 0)
+        '(((([0-6])(\\,|\\-))*([0-6]))|\\*)$' //day of week (1 - 7) (1 to 7 are Sunday to Saturday)
 
     private Pattern pattern = Pattern.compile(REGEX)
 
@@ -64,5 +64,21 @@ class CronDefinition {
             response.add(value as Integer)
         }
         return response
+    }
+
+    String translateToQuartzFormat() {
+        return translateToQuartzFormat(this.daysOfMonth?this.daysOfMonth.join(','):null)
+    }
+
+    String translateToQuartzFormat(String daysOfMonth) {
+        def cronValues = []
+        cronValues.add("0")
+        cronValues.add("${this.minutes?this.minutes.join(','):"*"}")
+        cronValues.add("${this.hours?this.hours.join(','):"*"}")
+        cronValues.add("${daysOfMonth?:"?"}")
+        cronValues.add("${this.months?this.months.join(','):"*"}")
+        cronValues.add("${daysOfMonth?"?":(this.daysOfWeek?this.daysOfWeek.join(','):"*")}")
+
+        return cronValues.join(" ")
     }
 }

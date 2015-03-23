@@ -4,6 +4,8 @@ import spock.lang.Specification
 
 class CronDefinitionSpec extends Specification {
 
+    def cronParserService
+
     def setup() {
 
     }
@@ -204,6 +206,24 @@ class CronDefinitionSpec extends Specification {
         expect:
         list.size() == 1
         list.contains(15)
+    }
+
+    void "test translation to QUARTZ format 0 10 1-3 * 1"() {
+        given:
+        CronDefinition cronDefinition = new CronDefinition("0 10 1-3 * 1")
+        String newDefinition = cronDefinition.translateToQuartzFormat()
+
+        expect:
+        newDefinition.equals("0 0 10 1,2,3 * ?")
+    }
+
+    void "test translation to QUARTZ format 0 9-10 * * 3,5"() {
+        given:
+        CronDefinition cronDefinition = new CronDefinition("0 9-10 * * 3,5")
+        String newDefinition = cronDefinition.translateToQuartzFormat()
+
+        expect:
+        newDefinition.equals("0 0 9,10 ? * 3,5")
     }
 
 }
