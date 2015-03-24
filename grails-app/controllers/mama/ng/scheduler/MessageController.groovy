@@ -6,6 +6,8 @@ class MessageController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
+    def cronParserService
+
     def list() {
         params.max = Math.min(params.max ? params.int('max') : 50, 200)
         def list = Message.list(params)
@@ -27,6 +29,11 @@ class MessageController {
     }
 
     def create(Message instance) {
+        if (!instance.nextSend) {
+            instance.nextSend = cronParserService.determineNextDate(instance.schedule.cronDefinition)
+            instance.save()
+        }
+
         if (instance == null) {
             notFound()
             return

@@ -73,6 +73,8 @@ grails.spring.bean.packages = []
 // whether to disable processing of multi part requests
 grails.web.disable.multipart=false
 
+grails.converters.json.pretty.print = true
+
 // request parameters to mask when logging exceptions
 grails.exceptionresolver.params.exclude = ['password']
 

@@ -39,6 +39,9 @@ class ScheduleController {
     }
 
     def create(Schedule instance) {
+        instance.nextSend = cronParserService.determineNextDate(instance.cronDefinition)
+        instance.save()
+
         if (instance == null) {
             notFound()
             return
@@ -53,8 +56,6 @@ class ScheduleController {
             }
             return
         }
-
-        instance.nextSend = cronParserService.determineNextDate(instance.cronDefinition)
         instance.save(flush:true, failOnError: true)
 
         withFormat {
