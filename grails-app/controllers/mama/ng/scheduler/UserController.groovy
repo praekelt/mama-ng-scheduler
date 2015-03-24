@@ -42,7 +42,6 @@ class UserController {
             return
         }
 
-        //TODO: Hash the password
         instance.save(flush:true, failOnError: true)
 
         withFormat {
@@ -59,8 +58,6 @@ class UserController {
             return
         }
 
-
-        //TODO: Hash the password
         if (instance.hasErrors()) {
             withFormat {
                 json {
