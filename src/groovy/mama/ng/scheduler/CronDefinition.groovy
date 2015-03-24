@@ -47,7 +47,7 @@ class CronDefinition {
         daysOfMonth = getListFromString(matcher.group(dayOfMonth))
         months = getListFromString(matcher.group(month))
         daysOfWeek = getListFromString(matcher.group(dayOfWeek))
-        daysOfWeek = this.daysOfWeek.collect { ++it }
+        daysOfWeek = this.daysOfWeek?this.daysOfWeek.collect { ++it }:null
     }
 
     /**
