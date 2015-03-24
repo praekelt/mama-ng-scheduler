@@ -111,4 +111,16 @@ class CronParserServiceSpec extends Specification {
         expect:
         nextDate == expectedDate
     }
+
+    void "test next date 0 10 1-30 * 2,4 complex"() {
+        given:
+        Calendar calendar = new GregorianCalendar(2015,0,6,0,0,0);
+        Date nextDate = service.determineNextDate("0 10 1-30 * 2,4", new Date(calendar.getTimeInMillis()))
+
+        Calendar expectedCalendar = new GregorianCalendar(2015,0,7,10,0,0);
+        Date expectedDate = new Date(expectedCalendar.getTimeInMillis())
+
+        expect:
+        nextDate == expectedDate
+    }
 }

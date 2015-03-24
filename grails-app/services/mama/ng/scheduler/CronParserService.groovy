@@ -8,14 +8,15 @@ class CronParserService {
 
     Date determineNextDate(String cron, Date now) {
         CronDefinition definition = new CronDefinition(cron)
-        Date response = new Date()
+        Date response = null
 
         if (definition.daysOfWeek && definition.daysOfMonth) {
             definition.daysOfMonth.each { Integer it ->
                 Date date = new CronExpression(definition.translateToQuartzFormat(it.toString())).getNextValidTimeAfter(now)
                 Calendar calendar = Calendar.getInstance()
                 calendar.setTime(date)
-                if (definition.daysOfWeek.contains(calendar.get(Calendar.DAY_OF_WEEK) as Integer)) {
+                if (definition.daysOfWeek.contains(calendar.get(Calendar.DAY_OF_WEEK) as Integer)
+                    && (response == null || date < response)) {
                     response = date
                 }
             }
