@@ -6,6 +6,8 @@ class ScheduleController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
+    def cronParserService
+
     def list() {
         params.max = Math.min(params.max ? params.int('max') : 50, 200)
         def list = Schedule.list(params)
@@ -52,6 +54,7 @@ class ScheduleController {
             return
         }
 
+        instance.nextSend = cronParserService.determineNextDate(instance.cronDefinition)
         instance.save(flush:true, failOnError: true)
 
         withFormat {
