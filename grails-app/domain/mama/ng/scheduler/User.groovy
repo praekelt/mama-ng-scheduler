@@ -22,10 +22,4 @@ class User {
         GENERAL,
         SUPER
     }
-
-    def setPasswordHash(String passwordHash) {
-        if (!this.passwordHash.equals(passwordHash)) {
-            this.passwordHash = passwordHash.encodeAsBase64()
-        }
-    }
 }

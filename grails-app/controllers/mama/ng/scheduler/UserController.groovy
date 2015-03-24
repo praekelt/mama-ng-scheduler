@@ -42,6 +42,7 @@ class UserController {
             return
         }
 
+        instance.passwordHash = instance.passwordHash.encodeAsBase64()
         instance.save(flush:true, failOnError: true)
 
         withFormat {
