@@ -8,6 +8,14 @@ class ScheduleController {
 
     def cronParserService
 
+
+    /**
+     * Pagination params:
+     * max = max items to return; default 10; max 100
+     * offset = offset of items; default 0
+     *
+     * @return
+     */
     def list() {
         params.max = Math.min(params.max ? params.int('max') : 50, 200)
         def list = Schedule.list(params)
@@ -39,18 +47,15 @@ class ScheduleController {
     }
 
     def create(Schedule instance) {
-        instance.nextSend = cronParserService.determineNextDate(instance.cronDefinition)
-        instance.save()
-
-        if (instance == null) {
-            notFound()
-            return
+        if (!instance.nextSend) {
+            instance.nextSend = cronParserService.determineNextDate(instance.cronDefinition)
+            instance.save()
         }
 
         if (instance.hasErrors()) {
             withFormat {
                 json {
-                    response.status = 403
+                    response.status = 400
                     render instance.errors as JSON
                 }
             }
@@ -75,7 +80,7 @@ class ScheduleController {
         if (instance.hasErrors()) {
             withFormat {
                 json {
-                    response.status = 403
+                    response.status = 400
                     render instance.errors as JSON
                 }
             }
@@ -104,7 +109,7 @@ class ScheduleController {
         withFormat {
             json {
                 response.status = 200
-                render ''
+                render {success: true} as JSON
             }
         }
     }
