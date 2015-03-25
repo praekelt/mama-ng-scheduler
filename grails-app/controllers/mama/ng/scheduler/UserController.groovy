@@ -16,7 +16,7 @@ class UserController {
      * @return
      */
     def list() {
-        params.max = Math.min(params.max ? params.int('max') : 50, 200)
+        params.max = Math.min(params.max ? params.int('max') : 10, 100)
         def list = User.list(params)
         withFormat {
             json {
