@@ -13,7 +13,7 @@ class User {
         id generator:'assigned'
         username(blank: false, nullable: false, unique: true)
         passwordHash(blank: false, nullable: false)
-        apiKey(blank: false, nullable: false, unique: true)
+        apiKey(blank: false, nullable: true, unique: true)
     }
 
     static mapping = { table 'service_users' }

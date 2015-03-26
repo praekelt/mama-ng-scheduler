@@ -79,8 +79,7 @@ class UserSpec extends Specification {
             user.apiKey = null
             user.save()
         expect:
-            user.hasErrors()
-            user.errors["apiKey"].toString().contains("nullable")
+            !user.hasErrors()
     }
 
 }
