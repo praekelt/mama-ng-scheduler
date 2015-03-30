@@ -5,5 +5,4 @@ COPY . /app
 WORKDIR /app
 
 RUN grails refresh-dependencies
-RUN grails war
 CMD ["prod", "run-war"]
