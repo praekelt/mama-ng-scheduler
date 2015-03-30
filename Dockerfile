@@ -6,4 +6,4 @@ WORKDIR /app
 
 RUN grails refresh-dependencies
 RUN grails war
-CMD "run-app"
+CMD ["prod", "run-war"]
