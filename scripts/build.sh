@@ -2,5 +2,7 @@
 
 set -e
 
-# Nothing here because the sideloader box's kernal is not recent
+# Nothing here because the sideloader box's kernel is not recent
 # enough to do anything with docker.
+
+cp -a $REPO ./build/
