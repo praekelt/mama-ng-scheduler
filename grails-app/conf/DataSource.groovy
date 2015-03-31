@@ -32,6 +32,8 @@ environments {
         dataSource {
             dbCreate = "update" // one of 'create', 'create-drop','update'
             uri = new URI(System.env.DATABASE_URL?:"postgresql://localhost:5432/scheduler")
+            username = uri.userInfo ? uri.userInfo.split(":")[0] : ""
+            password = uri.userInfo ? uri.userInfo.split(":")[1] : ""
             url = "jdbc:postgresql://" + uri.host + ":" + uri.port + uri.path
             properties {
                 maxActive = -1
