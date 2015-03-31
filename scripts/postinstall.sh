@@ -10,13 +10,13 @@ docker rm postgresql
 set -e
 
 docker run -d --name="postgresql" \
-    -v `pwd`/data:/data:rw \
+    -v $INSTALLDIR/data:/data:rw \
     -e USER="postgres" \
     -e DB="scheduler" \
     -e PASS="postgres" \
     paintedfox/postgresql
 
-docker build -t praekelt/mama-ng-scheduler $REPO
+docker build -t praekelt/mama-ng-scheduler $INSTALLDIR/$REPO
 docker run -d --name=mama-ng-scheduler \
     --link=postgresql:postgresql \
     -e DATABASE_URL="postgresql://postgresql:5432/scheduler" \
