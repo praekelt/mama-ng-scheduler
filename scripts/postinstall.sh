@@ -18,6 +18,6 @@ docker run -d --name="postgresql" \
 docker build -t praekelt/mama-ng-scheduler $INSTALLDIR/$REPO
 docker run -d --name=mama-ng-scheduler \
     --link=postgresql:postgresql \
-    -p 8090:8090
+    -p 8090:8090 \
     -e DATABASE_URL="postgresql://scheduler:scheduler@postgresql:5432/scheduler" \
     praekelt/mama-ng-scheduler
