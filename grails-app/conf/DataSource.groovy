@@ -31,7 +31,8 @@ environments {
     production {
         dataSource {
             dbCreate = "update" // one of 'create', 'create-drop','update'
-            url = "jdbc:postgresql://localhost:5432/scheduler"
+            uri = new URI(System.env.DATABASE_URL?:"postgresql://localhost:5432/scheduler")
+            url = "jdbc:postgresql://" + uri.host + ":" + uri.port + uri.path
             properties {
                 maxActive = -1
                 minEvictableIdleTimeMillis=1800000
