@@ -57,16 +57,18 @@ class SecurityService {
             user = User.findByUsername(username)
             if (!user) {
                 log.debug("User not found for username [${username}] from ${ipAddress}")
-            } else if (!user.checkPassword(password)) {
+                return null
+            }
+
+            if (!user.checkPassword(password)) {
                 log.debug("Invalid password for [${username}] from ${ipAddress}")
                 return null
-            } else {
-                identifiedBy = AuthToken.IdentifiedBy.PASSWORD
-                log.debug("Successful Login")
             }
-        }
 
-        if (!user) return null
+            identifiedBy = AuthToken.IdentifiedBy.PASSWORD
+            log.debug("Successful Login")
+
+        }
 
         def auth = new AuthToken(basicAuthHeader, userAgent, ipAddress, user, identifiedBy, rememberMe, newTicket)
         authCache.put(key, auth)

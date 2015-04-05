@@ -3,6 +3,7 @@ package mama.ng.scheduler
 class SecurityFilters {
 
     def securityService
+    def grailsApplication
 
     def filters = {
         all(controller:'*', action:'*') {
@@ -16,7 +17,7 @@ class SecurityFilters {
                         request.getHeader('User-Agent'), false)
                     if (!authToken) {
                         // set this header so browser will prompt for basic auth
-                        response.setHeader('WWW-Authenticate', 'basic realm="mama-ng-scheduler"')
+                        response.setHeader('WWW-Authenticate', grailsApplication.config.scheduler.realm.toString())
                         response.sendError(401)
                         return false
                     }

@@ -89,6 +89,10 @@ grails.hibernate.osiv.readonly = false
 
 quartz.autoStartup = false
 
+scheduler = {
+    realm = 'basic realm="mama-ng-scheduler"'
+}
+
 environments {
     development {
         grails.logging.jul.usebridge = true

@@ -36,7 +36,7 @@ class AuthToken {
     @Override
     String toString() {
         StringBuilder b = new StringBuilder()
-        b.append(user ? user.username : "Chess Lord")
+        b.append(user?.username)
         if (identifiedBy) b.append(' by ').append(identifiedBy)
         return b.toString()
     }
