@@ -87,12 +87,20 @@ grails.hibernate.pass.readonly = false
 // configure passing read-only to OSIV session by default, requires "singleSession = false" OSIV mode
 grails.hibernate.osiv.readonly = false
 
+//TODO change me
+grails.plugin.raven.dsn = "https://{PUBLIC_KEY}:{SECRET_KEY}@app.getsentry.com/{PATH}{PROJECT_ID}"
+
 environments {
+    test {
+        grails.plugin.raven.active = false
+    }
     development {
         grails.logging.jul.usebridge = true
+        grails.plugin.raven.active = false
     }
     production {
         grails.logging.jul.usebridge = false
+        grails.plugin.raven.active = true
         // TODO: grails.serverURL = "http://www.changeme.com"
     }
 }
