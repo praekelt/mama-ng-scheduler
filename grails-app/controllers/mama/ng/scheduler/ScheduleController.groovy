@@ -4,7 +4,7 @@ import grails.converters.JSON
 
 class ScheduleController {
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+    static allowedMethods = [create: "POST", update: "PUT", delete: "DELETE"]
 
     def cronParserService
 
@@ -19,31 +19,24 @@ class ScheduleController {
     def list() {
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
         def list = Schedule.list(params)
-        withFormat {
-            json {
-                response.status = 200
-                render list as JSON
-            }
-        }
+        response.status = 200
+        render list as JSON
     }
 
     def show(Schedule instance) {
-        withFormat {
-            json {
-                response.status = 200
-                render instance as JSON
-            }
+        if (instance == null) {
+            notFound()
+            return
         }
+
+        response.status = 200
+        render instance as JSON
     }
 
     def messages(Schedule instance) {
         def list = Message.findAllBySchedule(instance)
-        withFormat {
-            json {
-                response.status = 200
-                render list as JSON
-            }
-        }
+        response.status = 200
+        render list as JSON
     }
 
     def create(Schedule instance) {
@@ -53,22 +46,14 @@ class ScheduleController {
         }
 
         if (instance.hasErrors()) {
-            withFormat {
-                json {
-                    response.status = 400
-                    render instance.errors as JSON
-                }
-            }
+            response.status = 400
+            render instance.errors as JSON
             return
         }
         instance.save(flush:true, failOnError: true)
 
-        withFormat {
-            json {
-                response.status = 200
-                render instance as JSON
-            }
-        }
+        response.status = 200
+        render instance as JSON
     }
 
     def update(Schedule instance) {
@@ -78,23 +63,15 @@ class ScheduleController {
         }
 
         if (instance.hasErrors()) {
-            withFormat {
-                json {
-                    response.status = 400
-                    render instance.errors as JSON
-                }
-            }
+            response.status = 400
+            render instance.errors as JSON
             return
         }
 
         instance.save(flush:true, failOnError: true)
 
-        withFormat {
-            json {
-                response.status = 200
-                render instance as JSON
-            }
-        }
+        response.status = 200
+        render instance as JSON
     }
 
     def delete(Schedule instance) {
@@ -106,17 +83,11 @@ class ScheduleController {
 
         instance.delete(flush:true, failOnError: true)
 
-        withFormat {
-            json {
-                response.status = 200
-                render {success: true} as JSON
-            }
-        }
+        response.status = 200
+        render {success: true} as JSON
     }
 
     protected void notFound() {
-        withFormat {
-            json { response.sendError(404) }
-        }
+        response.sendError(404)
     }
 }
