@@ -89,6 +89,13 @@ grails.hibernate.osiv.readonly = false
 
 quartz.autoStartup = false
 
+mama.ng.scheduler {
+    cron.expression {
+        message = '0 0 * * * ?'
+        schedule = '0 0 * * * ?'
+    }
+}
+
 environments {
     development {
         grails.logging.jul.usebridge = true

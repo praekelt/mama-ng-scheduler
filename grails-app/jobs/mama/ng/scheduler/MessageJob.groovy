@@ -8,8 +8,10 @@ class MessageJob {
 
     def httpRequestService
 
+    def grailsApplication
+
     static triggers = {
-        cron name:'cronTrigger', startDelay:2000, cronExpression: '0 0 * * * ?' } //execute every hour on the hour
+        cron name:'cronTrigger', startDelay:2000, cronExpression: grailsApplication.config.mama.ng.scheduler.cron.expression.message }
 
     def group = "Message"
 

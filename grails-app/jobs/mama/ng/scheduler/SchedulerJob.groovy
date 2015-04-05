@@ -8,8 +8,10 @@ class SchedulerJob {
     def cronParserService
     def httpRequestService
 
+    def grailsApplication
+
     static triggers = {
-        cron name:'cronTrigger', startDelay:1000, cronExpression: '0 0 * * * ?' } //execute every hour on the hour
+        cron name:'cronTrigger', startDelay:1000, cronExpression: grailsApplication.config.mama.ng.scheduler.cron.expression.schedule }
 
     def group = "Scheduler"
 
