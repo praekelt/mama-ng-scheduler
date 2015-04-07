@@ -16,10 +16,9 @@ class SchedulerJob {
     /**
      * Finds all schedules that have a next send date less than or equal to current time.
      * Create a message for each schedule to ensure delivery.
-     * Message will be resent every hour until delivery is confirmed.
+     * Message will be resent until delivery is confirmed.
      * Update each schedule with a new nextSend date as well as send counter.
      * Execute post to schedule's endpoint.
-     * Delete schedule if send counter equals frequency.
      *
      * @return
      */
@@ -44,7 +43,6 @@ class SchedulerJob {
 
                 if (success) {
                     log.debug("Executed schedule [${schedule.id}]")
-                    schedule.save(failOnError: true, flush: true)
                 } else {
                     log.warn("Executing schedule [${schedule.id}] with endpoint [${schedule.endpoint}] failed")
                 }
