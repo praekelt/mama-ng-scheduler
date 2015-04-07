@@ -110,9 +110,8 @@ environments {
     production {
         grails.logging.jul.usebridge = false
         grails.plugin.raven.active = true
-        // TODO: grails.serverURL = "http://www.changeme.com"
         quartz.autoStartup = true
-        grails.serverURL = "http://www.mama-ng-scheduler.com"
+        grails.serverURL = "http://www.scheduler.com"
     }
 }
 
