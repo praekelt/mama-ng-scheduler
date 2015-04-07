@@ -90,6 +90,15 @@ grails.hibernate.osiv.readonly = false
 //TODO change me
 grails.plugin.raven.dsn = "https://{PUBLIC_KEY}:{SECRET_KEY}@app.getsentry.com/{PATH}{PROJECT_ID}"
 
+quartz.autoStartup = false
+
+mama.ng.scheduler = {
+    cron.expression = {
+        message = '0 0 * * * ?'
+        schedule = '0 0 * * * ?'
+    }
+}
+
 environments {
     test {
         grails.plugin.raven.active = false
@@ -102,6 +111,8 @@ environments {
         grails.logging.jul.usebridge = false
         grails.plugin.raven.active = true
         // TODO: grails.serverURL = "http://www.changeme.com"
+        quartz.autoStartup = true
+        grails.serverURL = "http://www.mama-ng-scheduler.com"
     }
 }
 
