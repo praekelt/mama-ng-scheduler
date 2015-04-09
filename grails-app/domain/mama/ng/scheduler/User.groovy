@@ -22,4 +22,8 @@ class User {
         GENERAL,
         SUPER
     }
+
+    boolean checkPassword(String password) {
+        return (password.bytes.encodeBase64().toString().equals(passwordHash))
+    }
 }
