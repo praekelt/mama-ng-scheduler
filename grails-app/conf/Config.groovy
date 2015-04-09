@@ -111,7 +111,7 @@ environments {
         grails.logging.jul.usebridge = false
         grails.plugin.raven.active = true
         quartz.autoStartup = true
-        grails.serverURL = "http://www.scheduler.com"
+        grails.serverURL = "http://scheduler.example.com"
     }
 }
 
