@@ -1,3 +1,5 @@
+import groovy.time.TimeCategory
+
 // locations to search for config files that get merged into the main config;
 // config files can be ConfigSlurper scripts, Java properties files, or classes
 // in the classpath in ConfigSlurper format
@@ -87,13 +89,29 @@ grails.hibernate.pass.readonly = false
 // configure passing read-only to OSIV session by default, requires "singleSession = false" OSIV mode
 grails.hibernate.osiv.readonly = false
 
+quartz.autoStartup = false
+
+scheduler = {
+    time = {
+        use (TimeCategory) {
+            message = 1.hour
+            schedule = 1.hour
+        }
+    }
+    cron.expression = {
+        message = '0 0 * * * ?'
+        schedule = '0 0 * * * ?'
+    }
+}
+
 environments {
     development {
         grails.logging.jul.usebridge = true
     }
     production {
         grails.logging.jul.usebridge = false
-        // TODO: grails.serverURL = "http://www.changeme.com"
+        quartz.autoStartup = true
+        grails.serverURL = "http://www.mama-ng-scheduler.com"
     }
 }
 
