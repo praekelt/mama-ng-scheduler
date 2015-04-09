@@ -34,7 +34,6 @@ class UserController {
 
     def create(User instance) {
         instance.save()
-        println(instance)
         if (instance.hasErrors()) {
             response.status = 400
             render instance.errors as JSON
