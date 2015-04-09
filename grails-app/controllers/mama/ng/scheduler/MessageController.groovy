@@ -82,12 +82,8 @@ class MessageController {
             schedule.delete(flush: true)
         }
 
-        withFormat {
-            json {
-                response.status = 200
-                render {success: true} as JSON
-            }
-        }
+        response.status = 200
+        render {success: true} as JSON
     }
 
     protected void notFound() {
