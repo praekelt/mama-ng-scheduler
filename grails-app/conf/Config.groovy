@@ -92,6 +92,7 @@ grails.hibernate.osiv.readonly = false
 quartz.autoStartup = false
 
 scheduler = {
+    realm = 'basic realm="mama-ng-scheduler"'
     time = {
         use (TimeCategory) {
             message = 1.hour
