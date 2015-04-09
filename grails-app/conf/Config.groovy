@@ -1,3 +1,5 @@
+import groovy.time.TimeCategory
+
 // locations to search for config files that get merged into the main config;
 // config files can be ConfigSlurper scripts, Java properties files, or classes
 // in the classpath in ConfigSlurper format
@@ -87,12 +89,18 @@ grails.hibernate.pass.readonly = false
 // configure passing read-only to OSIV session by default, requires "singleSession = false" OSIV mode
 grails.hibernate.osiv.readonly = false
 
-//TODO change me
-grails.plugin.raven.dsn = "https://{PUBLIC_KEY}:{SECRET_KEY}@app.getsentry.com/{PATH}{PROJECT_ID}"
+grails.plugin.raven.dsn = System.env.SENTRY_URL
 
 quartz.autoStartup = false
 
-mama.ng.scheduler = {
+scheduler = {
+    realm = 'basic realm="mama-ng-scheduler"'
+    time = {
+        use (TimeCategory) {
+            message = 1.hour
+            schedule = 1.hour
+        }
+    }
     cron.expression = {
         message = '0 0 * * * ?'
         schedule = '0 0 * * * ?'
