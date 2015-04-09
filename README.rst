@@ -20,6 +20,11 @@ Build the local Docker image
     git clone https://github.com/praekelt/mama-ng-scheduler ./mama-ng-scheduler
     docker build -t praekelt/mama-ng-scheduler ./mama-ng-scheduler
 
+
+.. note:: This application builds on an existing ``mozart/grails:2.4.4``
+          grails image which is 1.2 GB in size. Expect some time for the first
+          download and build.
+
 Run the application with Docker
 -------------------------------
 
