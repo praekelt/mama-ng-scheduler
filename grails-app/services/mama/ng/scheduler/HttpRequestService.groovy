@@ -1,5 +1,6 @@
 package mama.ng.scheduler
 
+import grails.converters.JSON
 import grails.transaction.Transactional
 import groovyx.net.http.ContentEncoding
 import groovyx.net.http.ContentType
@@ -11,14 +12,15 @@ import groovyx.net.http.Method
 class HttpRequestService {
 
 
-    Boolean postText(String baseUrl, method = Method.POST) {
+    Boolean postText(String baseUrl, JSON body, method = Method.POST) {
         try {
             def ret = null
             def http = new HTTPBuilder(baseUrl)
             http.contentEncoding = ContentEncoding.Type.DEFLATE
 
             // perform a POST request, expecting TEXT response
-            http.request(method, ContentType.TEXT) {
+            http.request(method, ContentType.JSON) {
+                uri.query = body.toString()
                 headers.'User-Agent' = 'Mozilla/5.0 Ubuntu/8.10 Firefox/3.0.4'
 
                 // response handler for a success response code

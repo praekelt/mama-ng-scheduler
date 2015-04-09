@@ -1,5 +1,7 @@
 package mama.ng.scheduler
 
+import grails.converters.JSON
+
 class SchedulerJob {
     def concurrent = false
 
@@ -39,7 +41,13 @@ class SchedulerJob {
                 schedule.save(failOnError: true, flush: true)
                 log.debug("Changed schedule [${schedule.id}] - nextSend: ${schedule.nextSend}")
 
-                def success = httpRequestService.postText(schedule.endpoint)
+                def body = [
+                    "schedule-id": schedule.id,
+                    "message-id": message.id,
+                    "send-counter": schedule.sendCounter
+                ]
+
+                def success = httpRequestService.postText(schedule.endpoint, body as JSON)
 
                 if (success) {
                     log.debug("Executed schedule [${schedule.id}]")
