@@ -93,8 +93,13 @@ class MessageController {
             notFound()
             return
         }
+        def schedule = instance.schedule
 
         instance.delete(flush:true, failOnError: true)
+
+        if (schedule.messages.size() == 0 && schedule.sendCounter >= schedule.frequency) {
+            schedule.delete(flush: true)
+        }
 
         withFormat {
             json {
