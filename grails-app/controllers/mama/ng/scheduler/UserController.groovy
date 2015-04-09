@@ -5,7 +5,7 @@ import org.codehaus.groovy.grails.web.json.JSONObject
 
 class UserController {
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+    static allowedMethods = [create: "POST", update: "PUT", delete: "DELETE"]
 
 
     /**
@@ -18,43 +18,33 @@ class UserController {
     def list() {
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
         def list = User.list(params)
-        withFormat {
-            json {
-                response.status = 200
-                render list as JSON
-            }
-        }
+        response.status = 200
+        render list as JSON
     }
 
     def show(User instance) {
-        withFormat {
-            json {
-                response.status = 200
-                render instance as JSON
-            }
+        if (instance == null) {
+            notFound()
+            return
         }
+
+        response.status = 200
+        render instance as JSON
     }
 
     def create(User instance) {
+        instance.save()
         if (instance.hasErrors()) {
-            withFormat {
-                json {
-                    response.status = 400
-                    render instance.errors as JSON
-                }
-            }
+            response.status = 400
+            render instance.errors as JSON
             return
         }
 
         instance.passwordHash = instance.passwordHash.encodeAsBase64()
         instance.save(flush:true, failOnError: true)
 
-        withFormat {
-            json {
-                response.status = 200
-                render instance as JSON
-            }
-        }
+        response.status = 200
+        render instance as JSON
     }
 
     def update() {
@@ -82,23 +72,15 @@ class UserController {
         instance.save()
 
         if (instance.hasErrors()) {
-            withFormat {
-                json {
-                    response.status = 400
-                    render instance.errors as JSON
-                }
-            }
+            response.status = 400
+            render instance.errors as JSON
             return
         }
 
         instance.save(flush:true, failOnError: true)
 
-        withFormat {
-            json {
-                response.status = 200
-                render instance as JSON
-            }
-        }
+        response.status = 200
+        render instance as JSON
     }
 
     def delete(User instance) {
@@ -110,17 +92,11 @@ class UserController {
 
         instance.delete(flush:true, failOnError: true)
 
-        withFormat {
-            json {
-                response.status = 200
-                render {success: true} as JSON
-            }
-        }
+        response.status = 200
+        render {success: true} as JSON
     }
 
     protected void notFound() {
-        withFormat {
-            json { response.sendError(404) }
-        }
+         response.sendError(404)
     }
 }

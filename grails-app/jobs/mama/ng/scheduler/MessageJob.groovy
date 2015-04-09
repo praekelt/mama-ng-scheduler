@@ -1,8 +1,5 @@
 package mama.ng.scheduler
 
-import groovy.time.TimeCategory
-
-
 class MessageJob {
     def concurrent = false
 
@@ -11,7 +8,7 @@ class MessageJob {
     def grailsApplication
 
     static triggers = {
-        cron name:'cronTrigger', startDelay:2000, cronExpression: grailsApplication.config.mama.ng.scheduler.cron.expression.message }
+        cron name:'cronTrigger', startDelay:2000, cronExpression: grailsApplication.config.scheduler.cron.expression.message }
 
     def group = "Message"
 
@@ -23,20 +20,18 @@ class MessageJob {
      * @return
      */
     def execute() {
-        use (TimeCategory) {
-            def then = new Date() + 1.hour
-            def messages = Message.findAllByNextSendLessThanEquals(then)
+        def then = new Date() + (grailsApplication.config.scheduler.time.message)
+        def messages = Message.findAllByNextSendLessThanEquals(then)
 
-            messages.each { Message message ->
-                def schedule = message.schedule
+        messages.each { Message message ->
+            def schedule = message.schedule
 
-                def success = httpRequestService.postText(schedule.endpoint)
+            def success = httpRequestService.postText(schedule.endpoint)
 
-                if (success) {
-                    log.info("Executed message [${message.id}]")
-                } else {
-                    log.warn("Executing message [${message.id}] with endpoint [${schedule.endpoint}] failed")
-                }
+            if (success) {
+                log.info("Executed message [${message.id}]")
+            } else {
+                log.warn("Executing message [${message.id}] with endpoint [${schedule.endpoint}] failed")
             }
         }
     }

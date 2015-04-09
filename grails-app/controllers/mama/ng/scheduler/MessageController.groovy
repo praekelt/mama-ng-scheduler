@@ -4,7 +4,7 @@ import grails.converters.JSON
 
 class MessageController {
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+    static allowedMethods = [create: "POST", update: "PUT", delete: "DELETE"]
 
     def cronParserService
 
@@ -18,21 +18,18 @@ class MessageController {
     def list() {
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
         def list = Message.list(params)
-        withFormat {
-            json {
-                response.status = 200
-                render list as JSON
-            }
-        }
+        response.status = 200
+        render list as JSON
     }
 
     def show(Message instance) {
-        withFormat {
-            json {
-                response.status = 200
-                render instance as JSON
-            }
+        if (instance == null) {
+            notFound()
+            return
         }
+
+        response.status = 200
+        render instance as JSON
     }
 
     def create(Message instance) {
@@ -42,23 +39,15 @@ class MessageController {
         }
 
         if (instance.hasErrors()) {
-            withFormat {
-                json {
-                    response.status = 400
-                    render instance.errors as JSON
-                }
-            }
+            response.status = 400
+            render instance.errors as JSON
             return
         }
 
         instance.save(flush:true, failOnError: true)
 
-        withFormat {
-            json {
-                response.status = 200
-                render instance as JSON
-            }
-        }
+        response.status = 200
+        render instance as JSON
     }
 
     def update(Message instance) {
@@ -68,23 +57,15 @@ class MessageController {
         }
 
         if (instance.hasErrors()) {
-            withFormat {
-                json {
-                    response.status = 400
-                    render instance.errors as JSON
-                }
-            }
+            response.status = 400
+            render instance.errors as JSON
             return
         }
 
         instance.save(flush:true, failOnError: true)
 
-        withFormat {
-            json {
-                response.status = 200
-                render instance as JSON
-            }
-        }
+        response.status = 200
+        render instance as JSON
     }
 
     def delete(Message instance) {
@@ -93,20 +74,20 @@ class MessageController {
             notFound()
             return
         }
+        def schedule = instance.schedule
 
         instance.delete(flush:true, failOnError: true)
 
-        withFormat {
-            json {
-                response.status = 200
-                render {success: true} as JSON
-            }
+        if ((!schedule.messages || schedule.messages.size() == 0) &&
+             schedule.sendCounter >= schedule.frequency) {
+            schedule.delete(flush: true)
         }
+
+        response.status = 200
+        render {success: true} as JSON
     }
 
     protected void notFound() {
-        withFormat {
-            json { response.sendError(404) }
-        }
+        response.sendError(404)
     }
 }
