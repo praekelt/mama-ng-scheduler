@@ -89,8 +89,7 @@ grails.hibernate.pass.readonly = false
 // configure passing read-only to OSIV session by default, requires "singleSession = false" OSIV mode
 grails.hibernate.osiv.readonly = false
 
-//TODO change me
-grails.plugin.raven.dsn = "https://{PUBLIC_KEY}:{SECRET_KEY}@app.getsentry.com/{PATH}{PROJECT_ID}"
+grails.plugin.raven.dsn = System.env.SENTRY_URL
 
 quartz.autoStartup = false
 
