@@ -97,13 +97,13 @@ scheduler = {
     realm = 'basic realm="mama-ng-scheduler"'
     time = {
         use (TimeCategory) {
-            message = 1.hour
-            schedule = 1.hour
+            message = System.env.SCHEDULER_TIME_MESSAGE ? System.env.SCHEDULER_TIME_MESSAGE.toInteger().seconds : 1.hour
+            schedule = System.env.SCHEDULER_TIME_SCHEDULE ? System.env.SCHEDULER_TIME_SCHEDULE.toInteger().seconds : 1.hour
         }
     }
     cron.expression = {
-        message = System.env.SCHEDULER_CRON_MESSAGE ? '0 0 * * * ?'
-        schedule = System.env.SCHEDULER_CRON_SCHEDULE ? '0 0 * * * ?'
+        message = System.env.SCHEDULER_CRON_MESSAGE ?: '0 0 * * * ?'
+        schedule = System.env.SCHEDULER_CRON_SCHEDULE ?: '0 0 * * * ?'
     }
 }
 
