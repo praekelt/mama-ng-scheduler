@@ -102,8 +102,8 @@ scheduler = {
         }
     }
     cron.expression = {
-        message = '0 0 * * * ?'
-        schedule = '0 0 * * * ?'
+        message = System.env.SCHEDULER_CRON_MESSAGE ? '0 0 * * * ?'
+        schedule = System.env.SCHEDULER_CRON_SCHEDULE ? '0 0 * * * ?'
     }
 }
 
