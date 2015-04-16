@@ -1,6 +1,7 @@
 package mama.ng.scheduler
 
 import grails.converters.JSON
+import groovy.time.TimeCategory
 
 class SchedulerJob {
     def concurrent = false
@@ -8,10 +9,8 @@ class SchedulerJob {
     def cronParserService
     def httpRequestService
 
-    def grailsApplication
-
     static triggers = {
-        cron name:'cronTrigger', startDelay:1000, cronExpression: grailsApplication.config.scheduler.cron.expression.schedule }
+        cron name:'cronTrigger', startDelay:1000, cronExpression: "0 0 * * * ?" }
 
     def group = "Scheduler"
 
@@ -25,38 +24,41 @@ class SchedulerJob {
      * @return
      */
     def execute() {
-        log.info("Schedule Job running...")
-        def then = new Date() + (grailsApplication.config.scheduler.time.schedule)
-        def schedules = Schedule.findAllByNextSendLessThanEquals(then)
-        log.info("Found ${schedules.size()} schedules that need to be excecuted.")
+        use(TimeCategory) {
+            log.info("Schedule Job running...")
+            def then = new Date() + 1.hour
+            def schedules = Schedule.findAllByNextSendLessThanEquals(then)
+            log.info("Found ${schedules.size()} schedules that need to be excecuted.")
 
-        schedules.each { Schedule schedule ->
-            if (schedule.sendCounter < schedule.frequency) {
-                //Create a new message so this message is repeated every hour until delivery is confirmed
-                Message message = new Message(schedule: schedule, nextSend: schedule.nextSend)
-                message.save(flush: true, failOnError: true)
-                schedule.sendCounter = schedule.sendCounter++
-                log.debug("Created message [${message.id}] from schedule [${schedule.id}]")
+            schedules.each { Schedule schedule ->
+                if (schedule.sendCounter < schedule.frequency) {
+                    //Create a new message so this message is repeated every hour until delivery is confirmed
+                    Message message = new Message(schedule: schedule, nextSend: schedule.nextSend)
+                    message.save(flush: true, failOnError: true)
+                    schedule.sendCounter = schedule.sendCounter++
+                    log.debug("Created message [${message.id}] from schedule [${schedule.id}]")
 
-                //Calculate when this schedule needs to be executed next.
-                schedule.nextSend = cronParserService.determineNextDate(schedule.cronDefinition, then)
-                schedule.save(failOnError: true, flush: true)
-                log.debug("Changed schedule [${schedule.id}] - nextSend: ${schedule.nextSend}")
+                    //Calculate when this schedule needs to be executed next.
+                    schedule.nextSend = cronParserService.determineNextDate(schedule.cronDefinition, then)
+                    schedule.save(failOnError: true, flush: true)
+                    log.debug("Changed schedule [${schedule.id}] - nextSend: ${schedule.nextSend}")
 
-                def body = [
-                    "schedule-id": schedule.id,
-                    "message-id": message.id,
-                    "send-counter": schedule.sendCounter
-                ]
+                    def body = [
+                            "schedule-id": schedule.id,
+                            "message-id": message.id,
+                            "send-counter": schedule.sendCounter
+                    ]
 
-                def success = httpRequestService.postText(schedule.endpoint, body as JSON)
+                    def success = httpRequestService.postText(schedule.endpoint, body as JSON)
 
-                if (success) {
-                    log.debug("Executed schedule [${schedule.id}]")
-                } else {
-                    log.warn("Executing schedule [${schedule.id}] with endpoint [${schedule.endpoint}] failed")
+                    if (success) {
+                        log.debug("Executed schedule [${schedule.id}]")
+                    } else {
+                        log.warn("Executing schedule [${schedule.id}] with endpoint [${schedule.endpoint}] failed")
+                    }
                 }
             }
+
         }
     }
 }
