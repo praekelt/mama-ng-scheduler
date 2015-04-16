@@ -22,8 +22,10 @@ class MessageJob {
      * @return
      */
     def execute() {
+        log.info("Message Job running...")
         def then = new Date() + (grailsApplication.config.scheduler.time.message)
         def messages = Message.findAllByNextSendLessThanEquals(then)
+        log.info("Found ${messages.size()} messages that need to be excecuted.")
 
         messages.each { Message message ->
             def schedule = message.schedule

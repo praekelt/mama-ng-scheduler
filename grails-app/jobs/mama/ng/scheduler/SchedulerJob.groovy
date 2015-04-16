@@ -25,8 +25,10 @@ class SchedulerJob {
      * @return
      */
     def execute() {
+        log.info("Schedule Job running...")
         def then = new Date() + (grailsApplication.config.scheduler.time.schedule)
         def schedules = Schedule.findAllByNextSendLessThanEquals(then)
+        log.info("Found ${schedules.size()} schedules that need to be excecuted.")
 
         schedules.each { Schedule schedule ->
             if (schedule.sendCounter < schedule.frequency) {
