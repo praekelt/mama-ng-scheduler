@@ -91,7 +91,7 @@ grails.hibernate.osiv.readonly = false
 
 grails.plugin.raven.dsn = System.env.SENTRY_URL
 
-quartz.autoStartup = false
+quartz.autoStartup = true
 
 scheduler = {
     realm = 'basic realm="mama-ng-scheduler"'
