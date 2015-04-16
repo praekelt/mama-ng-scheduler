@@ -1,4 +1,4 @@
-FROM mozart/grails:2.4.4
+FROM mozart/grails:2.5.0
 MAINTAINER Praekelt Foundation <dev@praekeltfoundation.org>
 
 COPY . /app
