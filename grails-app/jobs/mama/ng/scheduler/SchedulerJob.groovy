@@ -23,7 +23,11 @@ class SchedulerJob {
      */
     def execute() {
         log.info("Schedule Job running...")
-        def then = new Date() + (grailsApplication.config.scheduler.time.schedule)
+        Long timeout = System.getenv().SCHEDULER_TIME_MESSAGE ? System.getenv().SCHEDULER_TIME_MESSAGE.toInteger() * 1000 : (60 * 60 * 1000)
+        Calendar date = Calendar.getInstance();
+        date.setTimeInMillis(date.getTimeInMillis() + timeout);
+        def then = new Date(date.getTimeInMillis())
+
         def schedules = Schedule.findAllByNextSendLessThanEquals(then)
         log.info("Found ${schedules.size()} schedules that need to be excecuted.")
 
