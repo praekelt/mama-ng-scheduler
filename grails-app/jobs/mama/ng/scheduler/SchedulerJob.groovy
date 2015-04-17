@@ -10,9 +10,6 @@ class SchedulerJob {
 
     def grailsApplication
 
-    static triggers = {
-        cron name:'cronTrigger', startDelay:1000, cronExpression: grailsApplication.config.scheduler.cron.expression.schedule }
-
     def group = "Scheduler"
 
     /**
@@ -44,9 +41,9 @@ class SchedulerJob {
                 log.debug("Changed schedule [${schedule.id}] - nextSend: ${schedule.nextSend}")
 
                 def body = [
-                    "schedule-id": schedule.id,
-                    "message-id": message.id,
-                    "send-counter": schedule.sendCounter
+                        "schedule-id": schedule.id,
+                        "message-id": message.id,
+                        "send-counter": schedule.sendCounter
                 ]
 
                 def success = httpRequestService.postText(schedule.endpoint, body as JSON)

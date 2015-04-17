@@ -6,11 +6,7 @@ class MessageJob {
     def concurrent = false
 
     def httpRequestService
-
     def grailsApplication
-
-    static triggers = {
-        cron name:'cronTrigger', startDelay:2000, cronExpression: grailsApplication.config.scheduler.cron.expression.message }
 
     def group = "Message"
 
@@ -31,9 +27,9 @@ class MessageJob {
             def schedule = message.schedule
 
             def body = [
-                "schedule-id": schedule.id,
-                "message-id": message.id,
-                "send-counter": schedule.sendCounter
+                    "schedule-id" : schedule.id,
+                    "message-id"  : message.id,
+                    "send-counter": schedule.sendCounter
             ]
 
             def success = httpRequestService.postText(schedule.endpoint, body as JSON)

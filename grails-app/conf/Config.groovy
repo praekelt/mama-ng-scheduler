@@ -93,6 +93,8 @@ grails.plugin.raven.dsn = System.env.SENTRY_URL
 
 quartz.autoStartup = true
 
+scheduler.cron.expression.schedule = System.env.SCHEDULER_CRON_SCHEDULE ?: '0 0 * * * ?'
+
 scheduler = {
     realm = 'basic realm="mama-ng-scheduler"'
     time = {
@@ -101,19 +103,17 @@ scheduler = {
             schedule = System.env.SCHEDULER_TIME_SCHEDULE ? System.env.SCHEDULER_TIME_SCHEDULE.toInteger().seconds : 1.hour
         }
     }
-    cron.expression = {
-        message = System.env.SCHEDULER_CRON_MESSAGE ?: '0 0 * * * ?'
-        schedule = System.env.SCHEDULER_CRON_SCHEDULE ?: '0 0 * * * ?'
-    }
 }
 
 environments {
     test {
         grails.plugin.raven.active = false
+        quartz.autoStartup = true
     }
     development {
         grails.logging.jul.usebridge = true
         grails.plugin.raven.active = false
+        quartz.autoStartup = true
     }
     production {
         grails.logging.jul.usebridge = false
