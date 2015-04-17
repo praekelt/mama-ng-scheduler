@@ -36,7 +36,7 @@ class MessageJob {
                     "send-counter": schedule.sendCounter
             ]
 
-            def success = httpRequestService.postText(schedule.endpoint, body as JSON)
+            def success = httpRequestService.postText(schedule.endpoint, body)
 
             if (success) {
                 log.info("Executed message [${message.id}]")
