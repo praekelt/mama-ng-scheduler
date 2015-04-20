@@ -20,7 +20,7 @@ class Schedule {
         sendCounter(min: 0, nullable: false)
         cronDefinition(matches: CronDefinition.REGEX,
             nullable: false, blank: false)
-        nextSend(min: new Date(), nullable: false)
+        nextSend(nullable: false)
         endpoint(url: true, blank: false, nullable: false)
     }
 }

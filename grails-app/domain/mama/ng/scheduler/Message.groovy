@@ -11,6 +11,6 @@ class Message {
     static constraints = {
         id generator:'assigned'
         schedule(nullable: false)
-        nextSend(min: new Date(), nullable: false)
+        nextSend(nullable: false)
     }
 }

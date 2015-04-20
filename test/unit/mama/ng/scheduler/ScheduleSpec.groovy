@@ -126,8 +126,7 @@ class ScheduleSpec extends Specification {
                 schedule.save()
             }
         expect:
-            schedule.hasErrors()
-            schedule.errors["nextSend"].toString().contains("min")
+            !schedule.hasErrors()
     }
 
     void "test null nextSend"() {

@@ -66,8 +66,7 @@ class MessageSpec extends Specification {
                 message.save()
             }
         expect:
-            message.hasErrors()
-            message.errors["nextSend"].equals("min")
+            !message.hasErrors()
     }
 
     void "test null nextSend"() {
