@@ -12,16 +12,14 @@ import groovyx.net.http.Method
 class HttpRequestService {
 
 
-    Boolean postText(String baseUrl, Map body, method = Method.POST) {
+    Boolean postText(String url, Map bodyParams, method = Method.POST) {
         try {
             def ret = null
-            def http = new HTTPBuilder(baseUrl)
+            def http = new HTTPBuilder()
             http.contentEncoding = ContentEncoding.Type.DEFLATE
-
-            // perform a POST request, expecting TEXT response
-            http.request(method, ContentType.JSON) {
-                uri.query = body
-                headers.'User-Agent' = 'Mozilla/5.0 Ubuntu/8.10 Firefox/3.0.4'
+            http.request(url, method, ContentType.JSON) {
+                headers.'User-Agent' = 'mama-ng-scheduler-bot/0.1 (+http://https://github.com/praekelt/mama-ng-scheduler)'
+                body = bodyParams
 
                 // response handler for a success response code
                 response.success = { resp, reader ->
@@ -29,7 +27,6 @@ class HttpRequestService {
                 }
             }
             return ret
-
         } catch (HttpResponseException ex) {
             ex.printStackTrace()
             return null
