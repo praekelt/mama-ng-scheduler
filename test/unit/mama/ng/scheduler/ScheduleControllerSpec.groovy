@@ -3,20 +3,21 @@ package mama.ng.scheduler
 import grails.test.mixin.Mock
 import grails.test.mixin.TestFor
 import grails.test.mixin.TestMixin
-import grails.test.mixin.domain.DomainClassUnitTestMixin
+import grails.test.mixin.gorm.Domain
+import grails.test.mixin.hibernate.HibernateTestMixin
 import groovy.time.TimeCategory
 import spock.lang.Specification
 
-@TestMixin(DomainClassUnitTestMixin)
+@TestMixin(HibernateTestMixin)
 @TestFor(ScheduleController)
-@Mock([Schedule])
+@Domain([Schedule, Message])
 class ScheduleControllerSpec extends Specification {
 
     Schedule schedule
+    Message message
 
     def setup() {
         use (TimeCategory) {
-            mockForConstraintsTests(Schedule)
             schedule = new Schedule(
                 subscriptionId: "user-id",
                 frequency: 5,
@@ -138,5 +139,22 @@ class ScheduleControllerSpec extends Specification {
 
         then:
             response.status == 404
+    }
+
+    void "test delete schedule with messages"() {
+        given:
+            request.method = 'DELETE'
+            use (TimeCategory) {
+                message = new Message(
+                    schedule: schedule,
+                    nextSend: new Date() + 2.days
+                ).save(failOnError: true)
+            }
+
+        when:
+            controller.delete(schedule)
+
+        then:
+            response.status == 200
     }
 }
