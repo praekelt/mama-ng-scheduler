@@ -7,6 +7,7 @@ import grails.test.mixin.gorm.Domain
 import grails.test.mixin.hibernate.HibernateTestMixin
 import groovy.time.TimeCategory
 import spock.lang.Specification
+import org.springframework.dao.DataIntegrityViolationException
 
 @TestMixin(HibernateTestMixin)
 @TestFor(ScheduleController)
@@ -152,9 +153,11 @@ class ScheduleControllerSpec extends Specification {
             }
 
         when:
-            controller.delete(schedule)
+            def msg = shouldFail(DataIntegrityViolationException) {
+                controller.delete(schedule)
+            }
 
         then:
-            response.status == 200
+            msg.contains("MESSAGE FOREIGN KEY(SCHEDULE_ID) REFERENCES PUBLIC.SCHEDULE(ID)")
     }
 }
