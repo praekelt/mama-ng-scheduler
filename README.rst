@@ -41,8 +41,8 @@ it to the postgres container we just started::
 
     docker run --rm --name=mama-ng-scheduler \
         --link=postgresql:postgresql \
-        -p 8090:8090 \
+        -p 8000:8000 \
         -e DATABASE_URL="postgresql://scheduler:scheduler@postgresql:5432/scheduler" \
         praekelt/mama-ng-scheduler
 
-You can now access it on your docker container's IP address on port ``8090``.
+You can now access it on your docker container's IP address on port ``8000``.
